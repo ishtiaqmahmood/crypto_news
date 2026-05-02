@@ -1,6 +1,6 @@
 certifi==2022.12.7
 chardet==3.0.4
-Django==2.2.24
+Django==4.2.30
 gunicorn==19.9.0
 idna==2.8
 pkg-resources==0.0.0
