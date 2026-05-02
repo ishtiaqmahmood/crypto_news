@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
+import requests
+import json
 from django.shortcuts import render
 
-# Create your views here.
 def home(request):
-    import requests
-    import json
-
     # Grab crypto currency price data
     price_request = requests.get("https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,XRP,BCH,EOS,LTC,XLM,ADA,USDT,MIOTA,TRX,XMR&tsyms=USD,EUR")
     price = json.loads(price_request.content)
@@ -16,5 +11,8 @@ def home(request):
     api_request = requests.get("https://min-api.cryptocompare.com/data/v2/news/?lang=EN")  
     api = json.loads(api_request.content)
 
-    return render(request, 'home.html', {'api' : api, 'price' : price})
+    # Handle API error or empty data
+    if api.get('Response') == 'Error':
+        api['Data'] = []
 
+    return render(request, 'home.html', {'api': api, 'price': price})
